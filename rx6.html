@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--
+    <script src="https://unpkg.com/@reactivex/rxjs@6.0.0-beta.4/dist/global/rxjs.umd.js"></script>
+-->
+    <script src="./static/Rx6.umd.js"></script>
+    <script>
+        const { Observable, Subject, BehaviorSubject, pipe, of, from, interval, fromEvent , ajax, timer, forkJoin } = rxjs;
+        const { map, filter, scan, mergeMap, take, publish, 
+            refCount, share, tap, flatMap, switchMap, delay,
+            combineLatest, concat, merge, zip, max, reduce,
+            sampleTime, debounceTime,throttleTime,buffer,
+            retry, retryWhen
+        } = rxjs.operators;
+        const print = (k) => {return v => console.log(k, v)};
+    </script>
+  </head>
+  <body>
+    <h1> RxJS Demo </h1>
+    <p> rxjs@6.0.0-beta.4  UMD </p>
+    <div>Usage:</div>
+    <pre>
+    const { Observable, Subject, BehaviorSubject, pipe, of, from, interval, fromEvent , ajax, timer, forkJoin } = rxjs 
+    const { map, filter, scan, mergeMap, take, publish, 
+        refCount, share, tap, flatMap, switchMap, delay, 
+        combineLatest, concat, merge, zip, max, reduce,
+        sampleTime, debounceTime,throttleTime,buffer,
+        retry, retryWhen
+    } = rxjs.operators
+    
+    const print = (k) => {return v => console.log(k, v)};
+    </pre>
+    
+    <h3>Demo</h3>
+    <input id="example" />
+    <script>
+        let input = document.getElementById('example');
+        let input$  = fromEvent(input, 'keyup')
+        var stream$ = input$.pipe(
+            map( ev => ev.key )
+        ).pipe(
+            buffer(input$.pipe(debounceTime(500)))
+        ).pipe(
+            switchMap(snipet =>{
+                console.log('typed chars:', snipet.join(''))
+                return of(input.value)
+            })
+        )
+        stream$.subscribe((data) => console.log( 'current word',data ));
+    </script>
+  </body>
+</html>
